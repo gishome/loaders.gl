@@ -13,14 +13,8 @@ import Tile3DLayer from './tile-3d-layer';
 import {I3SLoader} from '@loaders.gl/i3s';
 import {StatsWidget} from '@probe.gl/stats-widget';
 
-//SanFrancisco_Bldgs
 const TEST_DATA_URL =
   'https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/SanFrancisco_Bldgs/SceneServer/layers/0';
-//philadelphia_Bldgs_text
-//https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/philadelphia_Bldgs_text_untex/SceneServer/layers/0
-//New_York_Buildings
-// const TEST_DATA_URL =
-// 'https://tiles.arcgis.com/tiles/z2tnIkrLQ2BRzr6P/arcgis/rest/services/New_York_Buildings/SceneServer/layers/0';
 
 // Set your mapbox token here
 const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
@@ -174,6 +168,7 @@ export default class App extends PureComponent {
     return (
       <div>
         {this._renderStats()}
+        {this._renderControlPanel()}
         <DeckGL
           ref={_ => (this._deckRef = _)}
           layers={layers}
@@ -194,4 +189,4 @@ export default class App extends PureComponent {
 }
 
 const deckViewer = document.getElementById('deck-viewer');
-render(<App />, deckViewer);
+render(<App/>, deckViewer);
