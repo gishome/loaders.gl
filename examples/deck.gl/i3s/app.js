@@ -1,5 +1,4 @@
-/* eslint-disable */
-/* global URL */
+/* global window, URL */
 import React, {PureComponent} from 'react';
 import {render} from 'react-dom';
 import {StaticMap} from 'react-map-gl';
@@ -32,13 +31,22 @@ const INITIAL_VIEW_STATE = {
   zoom: 14.5
 };
 
+const STATS_WIDGET_STYLE = {
+  wordBreak: 'break-word',
+  position: 'absolute',
+  padding: 12,
+  zIndex: '10000',
+  maxWidth: 300,
+  background: '#000',
+  color: '#fff'
+};
+
 export default class App extends PureComponent {
   constructor(props) {
     super(props);
     this._tilesetStatsWidget = null;
     this.state = {
       name: INITIAL_EXAMPLE_NAME,
-      dataUrl: EXAMPLES[INITIAL_EXAMPLE_NAME].url,
       viewState: INITIAL_VIEW_STATE
     };
   }
@@ -57,6 +65,15 @@ export default class App extends PureComponent {
     this._tilesetStatsWidget = new StatsWidget(null, {
       container: this._statsWidgetContainer
     });
+
+    // Check if a tileset is specified in the query params
+    const dataUrl = this._loadTilesetFromUrl() || EXAMPLES[INITIAL_EXAMPLE_NAME].url;
+    this.setState({dataUrl});
+  }
+
+  _loadTilesetFromUrl() {
+    const parsedUrl = new URL(window.location.href);
+    return parsedUrl.searchParams.get('url');
   }
 
   // Updates stats, called every frame
@@ -110,19 +127,7 @@ export default class App extends PureComponent {
 
   _renderStats() {
     // TODO - too verbose, get more default styling from stats widget?
-    return (
-      <div
-        style={{
-          position: 'absolute',
-          padding: 12,
-          zIndex: '10000',
-          maxWidth: 300,
-          background: '#000',
-          color: '#fff'
-        }}
-        ref={_ => (this._statsWidgetContainer = _)}
-      />
-    );
+    return <div style={STATS_WIDGET_STYLE} ref={_ => (this._statsWidgetContainer = _)} />;
   }
 
   _renderControlPanel() {
@@ -131,10 +136,10 @@ export default class App extends PureComponent {
       <ControlPanel
         tileset={tileset}
         name={name}
-        onExampleChange={({name, example}) =>
+        onExampleChange={selected =>
           this.setState({
-            name,
-            dataUrl: example.url
+            name: selected.name,
+            dataUrl: selected.example.url
           })
         }
       />
