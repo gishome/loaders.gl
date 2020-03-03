@@ -12,6 +12,7 @@ import Tile3DLayer from './tile-3d-layer';
 import {I3SLoader} from '@loaders.gl/i3s';
 import {StatsWidget} from '@probe.gl/stats-widget';
 import {INITIAL_EXAMPLE_NAME, EXAMPLES} from './examples';
+import ControlPanel from './components/control-panel';
 
 // Set your mapbox token here
 const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-line
